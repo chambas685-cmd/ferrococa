@@ -5,7 +5,7 @@ Tienda web para la ferretería **FERROCOCA** construida con Next.js (App Router)
 ## Funcionalidades
 
 - **Registro de usuarios por nombre + correo + contraseña**.
-- **Inicio de sesión** con correo y contraseña, sesiones firmadas con `jose` (JWT en cookie HttpOnly).
+- **Inicio de sesión** con correo y contraseña, sesiones firmadas con (JWT en cookie HttpOnly).
 - **Catálogo de productos** público con tarjetas, precios en USD y agregar al carrito.
 - **Carrito persistido en cookie** (sin DB) con cantidades editables.
 - **Checkout** con dirección de envío, método de pago (efectivo o transferencia) y notas.
@@ -13,7 +13,7 @@ Tienda web para la ferretería **FERROCOCA** construida con Next.js (App Router)
 - **Panel admin** (`/admin`): resumen, gestión de **productos** (CRUD), **pedidos** (con cambio de estado) y **usuarios** (resetear contraseña, conmutar rol admin).
 - Branding FERROCOCA: naranja (`#ff6a00`), blanco, negro.
 
-## Setup local
+## Instalación local
 
 ```bash
 pnpm install
