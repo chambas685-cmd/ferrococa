@@ -11,7 +11,7 @@ export default async function LoginPage() {
     <div className="max-w-md mx-auto px-4 py-12">
       <h1 className="text-3xl font-black mb-2">Iniciar sesión</h1>
       <p className="text-black/60 mb-6">
-        Ingresa con tu cédula y contraseña.
+        Ingresa con tu correo y contraseña.
       </p>
       <LoginForm />
       <p className="mt-6 text-sm text-black/70">

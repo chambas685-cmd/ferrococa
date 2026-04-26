@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import type { OrderStatus } from "@prisma/client";
 import { updateOrderStatus } from "@/app/actions/orders";
 
-const ALL: OrderStatus[] = ["PENDING", "CONTACTED", "COMPLETED", "CANCELLED"];
+const ALL: OrderStatus[] = ["PENDIENTE", "CONTACTADO", "COMPLETADO", "CANCELADO"];
 
 export function OrderStatusActions({
   orderId,
