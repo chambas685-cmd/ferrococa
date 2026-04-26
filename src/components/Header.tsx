@@ -11,9 +11,14 @@ export async function Header() {
     <header className="bg-black text-white">
       <div className="max-w-6xl mx-auto px-3 sm:px-4 py-3 flex flex-wrap items-center justify-between gap-2 sm:gap-4">
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <span className="inline-block w-8 h-8 sm:w-9 sm:h-9 rounded bg-[var(--color-brand)] grid place-items-center font-black text-black">
-            F
-          </span>
+          <Image
+            src="/logo.png"
+            alt="FERROCOCA"
+            width={36}
+            height={36}
+            className="rounded"
+            priority
+          />
           <span className="font-black tracking-tight text-lg sm:text-xl">
             FERRO<span className="text-[var(--color-brand)]">COCA</span>
           </span>
