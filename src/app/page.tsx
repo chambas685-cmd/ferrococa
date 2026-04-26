@@ -39,9 +39,14 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="hidden md:block">
-            <div className="aspect-[4/3] rounded-xl bg-black/10 grid place-items-center">
-              <span className="text-7xl">🛠️</span>
+          <div>
+            <div className="aspect-[4/3] rounded-xl overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/local_ferrococa.png"
+                alt="Ferretería FERROCOCA"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>
