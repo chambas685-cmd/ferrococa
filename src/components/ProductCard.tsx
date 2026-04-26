@@ -1,5 +1,6 @@
 import type { Product } from "@prisma/client";
 import { AddToCartButton } from "./AddToCartButton";
+import { ProductDetailButton } from "./ProductDetailButton";
 import { formatMoney } from "@/lib/format";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -52,7 +53,7 @@ export function ProductCard({ product }: { product: Product }) {
             ¡Solo quedan {product.stock}!
           </p>
         )}
-        <div className="mt-auto flex items-end justify-between gap-2 pt-2">
+        <div className="mt-auto flex flex-col gap-2 pt-2">
           <div className="flex flex-col leading-tight">
             {hasDiscount && (
               <span className="text-xs text-black/50 line-through">
@@ -63,11 +64,24 @@ export function ProductCard({ product }: { product: Product }) {
               {formatMoney(effectivePrice)}
             </span>
           </div>
-          <AddToCartButton
-            productId={product.id}
-            disabled={outOfStock}
-            label={outOfStock ? "Agotado" : "Agregar"}
-          />
+          <div className="flex items-center justify-end gap-2">
+            <ProductDetailButton
+              product={{
+                id: product.id,
+                name: product.name,
+                description: product.description,
+                price,
+                discountPrice: discount,
+                stock: product.stock,
+                imageUrl: product.imageUrl,
+              }}
+            />
+            <AddToCartButton
+              productId={product.id}
+              disabled={outOfStock}
+              label={outOfStock ? "Agotado" : "Agregar"}
+            />
+          </div>
         </div>
       </div>
     </article>
