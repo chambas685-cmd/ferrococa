@@ -12,16 +12,13 @@ export async function Header() {
       <div className="max-w-6xl mx-auto px-3 sm:px-4 py-3 flex flex-wrap items-center justify-between gap-2 sm:gap-4">
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <Image
-            src="/logo.png"
+            src="/logo_ferrococa.png"
             alt="FERROCOCA"
-            width={36}
+            width={140}
             height={36}
             className="rounded"
             priority
           />
-          <span className="font-black tracking-tight text-lg sm:text-xl">
-            FERRO<span className="text-[var(--color-brand)]">COCA</span>
-          </span>
         </Link>
 
         <nav className="flex flex-wrap items-center justify-end gap-1 text-xs sm:text-sm">
