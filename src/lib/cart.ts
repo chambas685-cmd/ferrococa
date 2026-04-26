@@ -54,16 +54,18 @@ export async function getCartWithProducts() {
     .map((i) => {
       const p = map.get(i.productId);
       if (!p) return null;
+      const quantity = Math.min(i.quantity, p.stock);
       return {
         productId: p.id,
         name: p.name,
         unitPrice: Number(p.price),
-        quantity: i.quantity,
-        subtotal: Number(p.price) * i.quantity,
+        quantity,
+        subtotal: Number(p.price) * quantity,
         imageUrl: p.imageUrl,
+        stock: p.stock,
       };
     })
-    .filter((x): x is NonNullable<typeof x> => x !== null);
+    .filter((x): x is NonNullable<typeof x> => x !== null && x.quantity > 0);
 
   const total = detailed.reduce((acc, i) => acc + i.subtotal, 0);
   return { items: detailed, total };

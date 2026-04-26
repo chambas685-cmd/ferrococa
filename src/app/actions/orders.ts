@@ -47,27 +47,68 @@ export async function createOrder(
     return { error: "Tu carrito está vacío" };
   }
 
-  const order = await prisma.order.create({
-    data: {
-      userId: user.id,
-      total: cart.total,
-      paymentMethod: parsed.data.paymentMethod,
-      address: parsed.data.address,
-      notes: parsed.data.notes,
-      status: "PENDING",
-      items: {
-        create: cart.items.map((i) => ({
-          productId: i.productId,
-          name: i.name,
-          unitPrice: i.unitPrice,
-          quantity: i.quantity,
-        })),
-      },
-    },
-  });
+  let order;
+  try {
+    order = await prisma.$transaction(async (tx) => {
+      // Lock-free check: re-read stock and validate inside transaction.
+      const products = await tx.product.findMany({
+        where: { id: { in: cart.items.map((i) => i.productId) }, active: true },
+        select: { id: true, name: true, stock: true },
+      });
+      const stockMap = new Map(products.map((p) => [p.id, p]));
+
+      for (const item of cart.items) {
+        const p = stockMap.get(item.productId);
+        if (!p) {
+          throw new Error(`Producto no disponible: ${item.name}`);
+        }
+        if (p.stock < item.quantity) {
+          throw new Error(
+            `Solo quedan ${p.stock} unidad(es) de ${p.name} en stock`,
+          );
+        }
+      }
+
+      // Decrement stock atomically with a guard to prevent overselling.
+      for (const item of cart.items) {
+        const updated = await tx.product.updateMany({
+          where: { id: item.productId, stock: { gte: item.quantity } },
+          data: { stock: { decrement: item.quantity } },
+        });
+        if (updated.count !== 1) {
+          const name = stockMap.get(item.productId)?.name ?? "producto";
+          throw new Error(`Stock insuficiente para ${name}`);
+        }
+      }
+
+      return tx.order.create({
+        data: {
+          userId: user.id,
+          total: cart.total,
+          paymentMethod: parsed.data.paymentMethod,
+          address: parsed.data.address,
+          notes: parsed.data.notes,
+          status: "PENDING",
+          items: {
+            create: cart.items.map((i) => ({
+              productId: i.productId,
+              name: i.name,
+              unitPrice: i.unitPrice,
+              quantity: i.quantity,
+            })),
+          },
+        },
+      });
+    });
+  } catch (e) {
+    return {
+      error: e instanceof Error ? e.message : "No pudimos crear el pedido",
+    };
+  }
 
   await clearCart();
   revalidatePath("/admin/orders");
+  revalidatePath("/products");
   redirect(`/orders/${order.id}/confirmation`);
 }
 

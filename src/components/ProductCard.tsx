@@ -3,9 +3,21 @@ import { AddToCartButton } from "./AddToCartButton";
 import { formatMoney } from "@/lib/format";
 
 export function ProductCard({ product }: { product: Product }) {
+  const outOfStock = product.stock <= 0;
+  const lowStock = !outOfStock && product.stock <= 5;
+
   return (
-    <article className="border border-black/10 rounded-lg overflow-hidden bg-white flex flex-col">
-      <div className="aspect-[4/3] bg-[var(--color-brand-light)] grid place-items-center">
+    <article className="border border-black/10 rounded-lg overflow-hidden bg-white flex flex-col relative">
+      {outOfStock && (
+        <span className="absolute top-2 right-2 z-10 bg-black text-white text-xs font-bold px-2 py-1 rounded">
+          AGOTADO
+        </span>
+      )}
+      <div
+        className={`aspect-[4/3] bg-[var(--color-brand-light)] grid place-items-center ${
+          outOfStock ? "opacity-60 grayscale" : ""
+        }`}
+      >
         {product.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -22,15 +34,21 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="text-sm text-black/60 line-clamp-2">
           {product.description}
         </p>
+        {lowStock && (
+          <p className="text-xs font-semibold text-[var(--color-brand-dark)]">
+            ¡Solo quedan {product.stock}!
+          </p>
+        )}
         <div className="mt-auto flex items-center justify-between pt-2">
           <span className="text-lg font-black text-[var(--color-brand-dark)]">
             {formatMoney(Number(product.price))}
           </span>
-          <AddToCartButton productId={product.id} disabled={product.stock <= 0} />
+          <AddToCartButton
+            productId={product.id}
+            disabled={outOfStock}
+            label={outOfStock ? "Agotado" : "Agregar"}
+          />
         </div>
-        {product.stock <= 0 && (
-          <p className="text-xs text-red-700">Sin stock</p>
-        )}
       </div>
     </article>
   );

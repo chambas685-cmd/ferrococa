@@ -13,8 +13,8 @@ export default async function AdminOrdersPage() {
   return (
     <div>
       <h1 className="text-3xl font-black mb-6">Pedidos</h1>
-      <div className="border border-black/10 rounded-lg bg-white overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="border border-black/10 rounded-lg bg-white overflow-x-auto">
+        <table className="w-full text-sm min-w-[720px]">
           <thead className="bg-black/5 text-left">
             <tr>
               <th className="p-3">Pedido</th>

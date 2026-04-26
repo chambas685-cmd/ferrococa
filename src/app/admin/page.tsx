@@ -51,11 +51,11 @@ export default async function AdminHomePage() {
             {recentOrders.map((o) => (
               <li
                 key={o.id}
-                className="py-2 flex items-center justify-between text-sm"
+                className="py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-sm"
               >
                 <Link
                   href={`/admin/orders/${o.id}`}
-                  className="hover:underline"
+                  className="hover:underline truncate"
                 >
                   #{o.id.slice(-6).toUpperCase()} — {o.user.fullName}
                 </Link>

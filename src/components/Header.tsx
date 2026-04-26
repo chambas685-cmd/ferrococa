@@ -9,27 +9,30 @@ export async function Header() {
 
   return (
     <header className="bg-black text-white">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="inline-block w-9 h-9 rounded bg-[var(--color-brand)] grid place-items-center font-black text-black">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 py-3 flex flex-wrap items-center justify-between gap-2 sm:gap-4">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
+          <span className="inline-block w-8 h-8 sm:w-9 sm:h-9 rounded bg-[var(--color-brand)] grid place-items-center font-black text-black">
             F
           </span>
-          <span className="font-black tracking-tight text-xl">
+          <span className="font-black tracking-tight text-lg sm:text-xl">
             FERRO<span className="text-[var(--color-brand)]">COCA</span>
           </span>
         </Link>
 
-        <nav className="flex items-center gap-1 sm:gap-3 text-sm">
+        <nav className="flex flex-wrap items-center justify-end gap-1 text-xs sm:text-sm">
           <Link
             href="/products"
-            className="px-3 py-2 rounded hover:bg-white/10"
+            className="px-2 sm:px-3 py-2 rounded hover:bg-white/10"
           >
             Productos
           </Link>
-          <Link href="/cart" className="px-3 py-2 rounded hover:bg-white/10">
+          <Link
+            href="/cart"
+            className="px-2 sm:px-3 py-2 rounded hover:bg-white/10 inline-flex items-center"
+          >
             Carrito
             {cartCount > 0 && (
-              <span className="ml-2 inline-block min-w-5 px-1 h-5 leading-5 text-xs text-center rounded-full bg-[var(--color-brand)] text-black font-bold">
+              <span className="ml-1.5 inline-block min-w-5 px-1 h-5 leading-5 text-xs text-center rounded-full bg-[var(--color-brand)] text-black font-bold">
                 {cartCount}
               </span>
             )}
@@ -38,17 +41,18 @@ export async function Header() {
           {user?.role === "ADMIN" && (
             <Link
               href="/admin"
-              className="px-3 py-2 rounded bg-[var(--color-brand)] text-black font-semibold hover:bg-[var(--color-brand-dark)]"
+              className="px-2 sm:px-3 py-2 rounded bg-[var(--color-brand)] text-black font-semibold hover:bg-[var(--color-brand-dark)]"
             >
-              Panel admin
+              <span className="hidden sm:inline">Panel admin</span>
+              <span className="sm:hidden">Admin</span>
             </Link>
           )}
 
           {user ? (
-            <form action={logout} className="ml-1">
+            <form action={logout}>
               <button
                 type="submit"
-                className="px-3 py-2 rounded border border-white/20 hover:bg-white/10"
+                className="px-2 sm:px-3 py-2 rounded border border-white/20 hover:bg-white/10"
                 title={`Sesión: ${user.fullName}`}
               >
                 Salir
@@ -58,15 +62,16 @@ export async function Header() {
             <>
               <Link
                 href="/login"
-                className="px-3 py-2 rounded hover:bg-white/10"
+                className="px-2 sm:px-3 py-2 rounded hover:bg-white/10"
               >
                 Ingresar
               </Link>
               <Link
                 href="/register"
-                className="px-3 py-2 rounded bg-[var(--color-brand)] text-black font-semibold hover:bg-[var(--color-brand-dark)]"
+                className="px-2 sm:px-3 py-2 rounded bg-[var(--color-brand)] text-black font-semibold hover:bg-[var(--color-brand-dark)]"
               >
-                Registrarse
+                <span className="hidden sm:inline">Registrarse</span>
+                <span className="sm:hidden">Registro</span>
               </Link>
             </>
           )}
