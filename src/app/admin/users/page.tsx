@@ -12,9 +12,9 @@ export default async function AdminUsersPage() {
   return (
     <div>
       <h1 className="text-3xl font-black mb-6">Usuarios</h1>
-      <div className="border border-black/10 rounded-lg bg-white overflow-x-auto">
+      <div className="border border-black/10 rounded-xl bg-white overflow-x-auto shadow-sm">
         <table className="w-full text-sm min-w-[600px]">
-          <thead className="bg-black/5 text-left">
+          <thead className="bg-black/[.03] text-left">
             <tr>
               <th className="p-3">Nombre</th>
               <th className="p-3">Correo</th>
@@ -25,7 +25,7 @@ export default async function AdminUsersPage() {
           </thead>
           <tbody className="divide-y divide-black/10">
             {users.map((u) => (
-              <tr key={u.id}>
+              <tr key={u.id} className="hover:bg-black/[.015] transition">
                 <td className="p-3 font-semibold">{u.fullName}</td>
                 <td className="p-3">{u.email}</td>
                 <td className="p-3">
@@ -36,7 +36,7 @@ export default async function AdminUsersPage() {
                         : "bg-black/10"
                     }`}
                   >
-                    {u.role}
+                    {u.role === "ADMIN" ? "Administrador" : "Usuario"}
                   </span>
                 </td>
                 <td className="p-3">{u._count.orders}</td>

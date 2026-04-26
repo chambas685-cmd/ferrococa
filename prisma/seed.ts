@@ -36,6 +36,7 @@ async function main() {
             description:
               "Taladro percutor de 650W, mandril de 13mm, ideal para hormigón y madera.",
             price: 65.0,
+            discountPrice: 59.0,
             stock: 12,
           },
           {

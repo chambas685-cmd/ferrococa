@@ -55,12 +55,13 @@ export async function getCartWithProducts() {
       const p = map.get(i.productId);
       if (!p) return null;
       const quantity = Math.min(i.quantity, p.stock);
+      const unitPrice = Number(p.discountPrice ?? p.price);
       return {
         productId: p.id,
         name: p.name,
-        unitPrice: Number(p.price),
+        unitPrice,
         quantity,
-        subtotal: Number(p.price) * quantity,
+        subtotal: unitPrice * quantity,
         imageUrl: p.imageUrl,
         stock: p.stock,
       };

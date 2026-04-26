@@ -14,9 +14,9 @@ export default async function AdminOrdersPage() {
   return (
     <div>
       <h1 className="text-3xl font-black mb-6">Pedidos</h1>
-      <div className="border border-black/10 rounded-lg bg-white overflow-x-auto">
+      <div className="border border-black/10 rounded-xl bg-white overflow-x-auto shadow-sm">
         <table className="w-full text-sm min-w-[720px]">
-          <thead className="bg-black/5 text-left">
+          <thead className="bg-black/[.03] text-left">
             <tr>
               <th className="p-3">Pedido</th>
               <th className="p-3">Cliente</th>
@@ -35,7 +35,7 @@ export default async function AdminOrdersPage() {
               </tr>
             ) : (
               orders.map((o) => (
-                <tr key={o.id}>
+                <tr key={o.id} className="hover:bg-black/[.015] transition">
                   <td className="p-3">
                     <Link
                       href={`/admin/orders/${o.id}`}

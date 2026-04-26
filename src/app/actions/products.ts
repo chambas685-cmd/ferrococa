@@ -5,13 +5,27 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
 
-const ProductSchema = z.object({
-  name: z.string().min(2, "Nombre demasiado corto"),
-  description: z.string().min(2, "Descripción demasiado corta"),
-  price: z.coerce.number().positive("El precio debe ser mayor a 0"),
-  stock: z.coerce.number().int().min(0, "Stock inválido"),
-  imageUrl: z.string().url().optional().or(z.literal("")),
-});
+const ProductSchema = z
+  .object({
+    name: z.string().min(2, "Nombre demasiado corto"),
+    description: z.string().min(2, "Descripción demasiado corta"),
+    price: z.coerce.number().positive("El precio debe ser mayor a 0"),
+    discountPrice: z
+      .union([z.literal(""), z.coerce.number().positive()])
+      .optional(),
+    stock: z.coerce.number().int().min(0, "Stock inválido"),
+    imageUrl: z.string().url().optional().or(z.literal("")),
+  })
+  .refine(
+    (d) =>
+      d.discountPrice === "" ||
+      d.discountPrice === undefined ||
+      d.discountPrice < d.price,
+    {
+      message: "El descuento debe ser menor que el precio",
+      path: ["discountPrice"],
+    },
+  );
 
 export type ProductActionState = {
   error?: string;
@@ -28,6 +42,7 @@ export async function createProduct(
     name: formData.get("name"),
     description: formData.get("description"),
     price: formData.get("price"),
+    discountPrice: formData.get("discountPrice") ?? "",
     stock: formData.get("stock"),
     imageUrl: formData.get("imageUrl") ?? "",
   });
@@ -43,6 +58,8 @@ export async function createProduct(
       name: data.name,
       description: data.description,
       price: data.price,
+      discountPrice:
+        typeof data.discountPrice === "number" ? data.discountPrice : null,
       stock: data.stock,
       imageUrl: data.imageUrl ? data.imageUrl : null,
       active: true,
@@ -63,6 +80,7 @@ export async function updateProduct(
     name: formData.get("name"),
     description: formData.get("description"),
     price: formData.get("price"),
+    discountPrice: formData.get("discountPrice") ?? "",
     stock: formData.get("stock"),
     imageUrl: formData.get("imageUrl") ?? "",
   });
@@ -79,6 +97,8 @@ export async function updateProduct(
       name: data.name,
       description: data.description,
       price: data.price,
+      discountPrice:
+        typeof data.discountPrice === "number" ? data.discountPrice : null,
       stock: data.stock,
       imageUrl: data.imageUrl ? data.imageUrl : null,
     },
