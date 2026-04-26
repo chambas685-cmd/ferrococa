@@ -26,6 +26,10 @@ export function CartRow({ item }: { item: Item }) {
     startTransition(async () => {
       setError(null);
       const res = await setCartQuantity(item.productId, next);
+      if ("requireLogin" in res) {
+        router.push("/login?next=/cart");
+        return;
+      }
       if ("error" in res) setError(res.error);
       router.refresh();
     });

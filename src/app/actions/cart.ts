@@ -3,13 +3,21 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { readCart, writeCart } from "@/lib/cart";
+import { getCurrentUser } from "@/lib/session";
 
-export type CartActionResult = { ok: true } | { error: string };
+export type CartActionResult =
+  | { ok: true }
+  | { error: string }
+  | { requireLogin: true };
 
 export async function addToCart(
   productId: string,
   quantity = 1,
 ): Promise<CartActionResult> {
+  const user = await getCurrentUser();
+  if (!user) {
+    return { requireLogin: true };
+  }
   const product = await prisma.product.findUnique({
     where: { id: productId },
     select: { stock: true, active: true, name: true },
@@ -48,6 +56,10 @@ export async function setCartQuantity(
   productId: string,
   quantity: number,
 ): Promise<CartActionResult> {
+  const user = await getCurrentUser();
+  if (!user) {
+    return { requireLogin: true };
+  }
   const product = await prisma.product.findUnique({
     where: { id: productId },
     select: { stock: true, active: true, name: true },

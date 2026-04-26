@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { LoginForm } from "@/components/LoginForm";
 import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
@@ -13,7 +14,9 @@ export default async function LoginPage() {
       <p className="text-black/60 mb-6">
         Ingresa con tu correo y contraseña.
       </p>
-      <LoginForm />
+      <Suspense fallback={<div className="text-sm text-black/60">Cargando…</div>}>
+        <LoginForm />
+      </Suspense>
       <p className="mt-6 text-sm text-black/70">
         ¿No tienes cuenta?{" "}
         <Link

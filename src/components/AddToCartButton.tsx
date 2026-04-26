@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { addToCart } from "@/app/actions/cart";
 
 export function AddToCartButton({
@@ -16,6 +16,7 @@ export function AddToCartButton({
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <div className="flex flex-col items-end gap-1">
@@ -26,6 +27,11 @@ export function AddToCartButton({
           startTransition(async () => {
             setError(null);
             const res = await addToCart(productId, 1);
+            if ("requireLogin" in res) {
+              const next = encodeURIComponent(pathname || "/products");
+              router.push(`/login?next=${next}`);
+              return;
+            }
             if ("error" in res) setError(res.error);
             router.refresh();
           })

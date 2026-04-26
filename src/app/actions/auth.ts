@@ -58,6 +58,12 @@ const LoginSchema = z.object({
   password: z.string().min(1, "Ingresa tu contraseña"),
 });
 
+function safeNext(raw: FormDataEntryValue | null): string | null {
+  if (typeof raw !== "string") return null;
+  if (!raw.startsWith("/") || raw.startsWith("//")) return null;
+  return raw;
+}
+
 export async function loginUser(
   _prev: ActionState,
   formData: FormData,
@@ -81,7 +87,8 @@ export async function loginUser(
   if (!ok) return { error: "Correo o contraseña incorrectos" };
 
   await createSession(user.id, user.role);
-  redirect(user.role === "ADMIN" ? "/admin" : "/products");
+  const next = safeNext(formData.get("next"));
+  redirect(next ?? (user.role === "ADMIN" ? "/admin" : "/products"));
 }
 
 export async function logout() {

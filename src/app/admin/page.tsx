@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { formatMoney } from "@/lib/format";
+import { formatMoney, statusLabel } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -61,7 +61,7 @@ export default async function AdminHomePage() {
                 </Link>
                 <div className="flex items-center gap-3">
                   <span className="text-xs px-2 py-0.5 rounded bg-black/5 font-semibold">
-                    {o.status}
+                    {statusLabel(o.status)}
                   </span>
                   <span className="font-bold">
                     {formatMoney(Number(o.total))}

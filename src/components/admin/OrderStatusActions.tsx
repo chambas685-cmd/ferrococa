@@ -4,8 +4,9 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { OrderStatus } from "@prisma/client";
 import { updateOrderStatus } from "@/app/actions/orders";
+import { statusLabel } from "@/lib/format";
 
-const ALL: OrderStatus[] = ["PENDIENTE", "CONTACTADO", "COMPLETADO", "CANCELADO"];
+const ALL: OrderStatus[] = ["PENDING", "CONTACTED", "COMPLETED", "CANCELLED"];
 
 export function OrderStatusActions({
   orderId,
@@ -36,7 +37,7 @@ export function OrderStatusActions({
               : "bg-white border-black/15 hover:bg-black/5"
           } disabled:cursor-not-allowed`}
         >
-          {s}
+          {statusLabel(s)}
         </button>
       ))}
     </div>

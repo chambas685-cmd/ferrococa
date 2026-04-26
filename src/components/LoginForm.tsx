@@ -1,14 +1,18 @@
 "use client";
 
 import { useActionState } from "react";
+import { useSearchParams } from "next/navigation";
 import { loginUser, type ActionState } from "@/app/actions/auth";
 
 const initial: ActionState = {};
 
 export function LoginForm() {
   const [state, formAction, pending] = useActionState(loginUser, initial);
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next") ?? "";
   return (
     <form action={formAction} className="flex flex-col gap-4">
+      <input type="hidden" name="next" value={next} />
       <Field
         label="Correo electrónico"
         name="email"

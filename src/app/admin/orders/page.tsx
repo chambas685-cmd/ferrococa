@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { formatMoney } from "@/lib/format";
+import { formatMoney, formatDateTime, statusLabel } from "@/lib/format";
+import type { OrderStatus } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
@@ -60,7 +61,7 @@ export default async function AdminOrdersPage() {
                     <StatusBadge status={o.status} />
                   </td>
                   <td className="p-3 text-xs text-black/60">
-                    {o.createdAt.toLocaleString("es-EC")}
+                    {formatDateTime(o.createdAt)}
                   </td>
                 </tr>
               ))
@@ -72,7 +73,7 @@ export default async function AdminOrdersPage() {
   );
 }
 
-function StatusBadge({ status }: { status: string }) {
+function StatusBadge({ status }: { status: OrderStatus }) {
   const cls =
     status === "PENDING"
       ? "bg-yellow-100 text-yellow-900"
@@ -83,7 +84,7 @@ function StatusBadge({ status }: { status: string }) {
       : "bg-red-100 text-red-900";
   return (
     <span className={`text-xs px-2 py-0.5 rounded font-semibold ${cls}`}>
-      {status}
+      {statusLabel(status)}
     </span>
   );
 }
